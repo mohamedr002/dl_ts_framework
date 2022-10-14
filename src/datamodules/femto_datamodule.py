@@ -126,7 +126,6 @@ class MNISTDataModule(LightningDataModule):
         """Things to do when loading checkpoint."""
         pass
 
-
 if __name__ == "__main__":
     import hydra
     import omegaconf
