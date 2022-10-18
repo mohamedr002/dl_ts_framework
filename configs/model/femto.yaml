@@ -1,7 +1,7 @@
 _target_: src.models.mnist_module.MNISTLitModule
 
 optimizer:
-  _target_: torch.optim.Adam
+  _target_: torch.optim.AdamW
   _partial_: true
   lr: 0.001
   weight_decay: 0.0
@@ -24,9 +24,10 @@ net:
 
 CNN:
   _target_: src.models.components.CNN.CNN
-  input_dim: input_dim
+  input_dim: 2
   out_dim: 1
   fc_drop: 0.5
+  input_length: 2560
 
 LSTM:
   _target_: src.models.components.CNN.CNN
