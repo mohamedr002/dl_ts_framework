@@ -8,7 +8,7 @@ class CNN(nn.Module):
         self.dropout=dropout
         self.out_dim = out_dim
         self.encoder = nn.Sequential(
-            nn.Conv1d(self.input_dim, 8, kernel_size=3, stride=1, padding=1, dilation=1),
+            nn.Conv1d(self.input_dim, 8, kernel_size=kernel_size, stride=1, padding=1, dilation=1),
             nn.ReLU(),
             nn.Conv1d(8, 8, kernel_size=3, stride=2, padding=1, dilation=1),
             nn.ReLU(),
@@ -29,11 +29,13 @@ class CNN(nn.Module):
             nn.ReLU(),
             nn.Dropout(p=self.dropout),
             nn.Linear(self.hidden_dim//2,  self.out_dim))
+        self.model = nn.Sequential(self.encoder, self.regressor)
     def forward(self, src):
         # reshape input (batch_size, input_dim, sequence length)
         src= src.view(src.size(0),self.input_dim,-1)
-        features = self.encoder(src)
-        predictions = self.regressor(features)
+        # features = self.encoder(src)
+        # predictions = self.regressor(features)
+        predictions = self.model(src)
         return predictions
 #cnn_model=CNN_RUL(14,30,0.5)
 #cnn_model.encoder

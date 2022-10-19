@@ -3,8 +3,7 @@ from torch import nn
 
 
 class SimpleDenseNet(nn.Module):
-    def __init__(self, input_size: int = 784,lin1_size: int = 256,lin2_size: int = 256,lin3_size: int = 256,output_size: int = 10,
-    ):
+    def __init__(self, input_size: int = 784,lin1_size: int = 256,lin2_size: int = 256,lin3_size: int = 256,output_size: int = 10,):
         super().__init__()
 
         self.model = nn.Sequential(

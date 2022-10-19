@@ -22,16 +22,3 @@ net:
   output_size: 10
 
 
-CNN:
-  _target_: src.models.components.CNN.CNN
-  input_dim: input_dim
-  out_dim: 1
-  fc_drop: 0.5
-
-LSTM:
-  _target_: src.models.components.CNN.CNN
-  input_dim: input_dim
-  hid_dim: hid_dim
-  out_dim: out_dim
-
-

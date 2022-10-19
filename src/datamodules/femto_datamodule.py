@@ -5,9 +5,9 @@ from pytorch_lightning import LightningDataModule
 from torch.utils.data import ConcatDataset, DataLoader, Dataset, random_split
 from torchvision.datasets import MNIST
 from torchvision.transforms import transforms
+from .components.TS_DATASET import TSDataset
 
-
-class MNISTDataModule(LightningDataModule):
+class FEMTODataModule(LightningDataModule):
     """Example of LightningDataModule for MNIST dataset.
 
     A DataModule implements 5 key methods:
@@ -60,15 +60,13 @@ class MNISTDataModule(LightningDataModule):
 
     @property
     def num_classes(self):
-        return 10
+        return 1
 
     def prepare_data(self):
         """Download data if needed.
 
         Do not use it to assign state (self.x = y).
         """
-        MNIST(self.hparams.data_dir, train=True, download=True)
-        MNIST(self.hparams.data_dir, train=False, download=True)
 
     def setup(self, stage: Optional[str] = None):
         """Load data. Set variables: `self.data_train`, `self.data_val`, `self.data_test`.
@@ -76,6 +74,12 @@ class MNISTDataModule(LightningDataModule):
         This method is called by lightning with both `trainer.fit()` and `trainer.test()`, so be
         careful not to execute things like random split twice!
         """
+        FEMTO = torch.load('data/FEMTO/sliced_femto_256.pt')
+
+        self.data_train: Optional[Dataset] = TSDataset(FEMTO['train_data'])
+        self.data_val: Optional[Dataset] = TSDataset(FEMTO['test_data'])
+        self.data_test: Optional[Dataset] = TSDataset(FEMTO['test_data'])
+
         # load and split datasets only if not loaded already
         if not self.data_train and not self.data_val and not self.data_test:
             trainset = MNIST(self.hparams.data_dir, train=True, transform=self.transforms)
@@ -132,6 +136,6 @@ if __name__ == "__main__":
     import pyrootutils
 
     root = pyrootutils.setup_root(__file__, pythonpath=True)
-    cfg = omegaconf.OmegaConf.load(root / "configs" / "datamodule" / "mnist.yaml")
+    cfg = omegaconf.OmegaConf.load(root / "configs" / "datamodule" / "femto.yaml")
     cfg.data_dir = str(root / "data")
     _ = hydra.utils.instantiate(cfg)

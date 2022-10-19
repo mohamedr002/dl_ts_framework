@@ -1,4 +1,4 @@
-_target_: src.models.mnist_module.MNISTLitModule
+_target_: src.models.regression_module.FEMTOLitModule
 
 optimizer:
   _target_: torch.optim.AdamW
@@ -13,26 +13,27 @@ scheduler:
   factor: 0.1
   patience: 10
 
+#net:
+#  _target_: src.models.components.simple_dense_net.SimpleDenseNet
+#  input_size: 784
+#  lin1_size: 64
+#  lin2_size: 128
+#  lin3_size: 64
+#  output_size: 10
+
+
 net:
-  _target_: src.models.components.simple_dense_net.SimpleDenseNet
-  input_size: 784
-  lin1_size: 64
-  lin2_size: 128
-  lin3_size: 64
-  output_size: 10
-
-
-CNN:
   _target_: src.models.components.CNN.CNN
-  input_dim: 2
+  input_channels: 14
+  kernel_size: 3
+  hidden_dim: 32
   out_dim: 1
-  fc_drop: 0.5
-  input_length: 2560
-
-LSTM:
-  _target_: src.models.components.CNN.CNN
-  input_dim: input_dim
-  hid_dim: hid_dim
-  out_dim: out_dim
+  dropout: 0.5
+#
+#LSTM:
+#  _target_: src.models.components.CNN.CNN
+#  input_dim: input_dim
+#  hid_dim: hid_dim
+#  out_dim: out_dim
 
 
